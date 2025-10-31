@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Modern Glass Dashboard</title>
+  <title>Glass Dashboard</title>
 
   <style>
-    /* ====== RESET ====== */
+    /* ===== GLOBAL RESET ===== */
     * {
       margin: 0;
       padding: 0;
@@ -15,17 +15,14 @@
     }
 
     body {
-      background: radial-gradient(circle at top left, #0a0f1f, #0a0a0a);
-      color: #fff;
-      height: 100vh;
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+      height: 100vh;
       overflow: hidden;
+      background: radial-gradient(circle at center, #0f2027 0%, #203a43 35%, #0a0a0a 100%);
+      color: #fff;
     }
 
-    /* ====== GLASS EFFECT BASE ====== */
+    /* ===== GLASS CARD BASE ===== */
     .glass-card {
       background: rgba(255, 255, 255, 0.08);
       backdrop-filter: blur(10px);
@@ -34,104 +31,53 @@
       border: 1px solid rgba(255, 255, 255, 0.2);
       box-shadow:
         0 8px 32px rgba(0, 0, 0, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3),
         inset 0 -1px 0 rgba(255, 255, 255, 0.05);
-      position: relative;
       overflow: hidden;
+      position: relative;
       transition: all 0.3s ease;
     }
 
-    /* ====== NAVBAR ====== */
-    .navbar {
-      position: fixed;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 90%;
-      height: 60px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 20px;
-      z-index: 100;
+    .glass-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
     }
 
-    .navbar.glass-card {
-      backdrop-filter: blur(12px);
-      border-radius: 15px;
+    .glass-card::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 1px;
+      height: 100%;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.5), transparent);
     }
 
-    .logo {
-      font-weight: 600;
-      font-size: 1.3em;
-      letter-spacing: 1px;
-      background: linear-gradient(90deg, #66fcf1, #45a29e);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .nav-search {
-      flex: 1;
-      display: flex;
-      justify-content: center;
-      margin: 0 20px;
-    }
-
-    .nav-search input {
-      width: 60%;
-      padding: 8px 15px;
-      border: none;
-      border-radius: 10px;
-      background: rgba(255, 255, 255, 0.15);
-      color: #fff;
-      outline: none;
-      font-size: 0.95em;
-      transition: all 0.3s ease;
-    }
-
-    .nav-search input::placeholder {
-      color: rgba(255, 255, 255, 0.6);
-    }
-
-    .nav-search input:focus {
-      background: rgba(255, 255, 255, 0.25);
-    }
-
-    .nav-profile {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .nav-profile img {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid rgba(255, 255, 255, 0.3);
-      transition: transform 0.3s ease;
-    }
-
-    .nav-profile img:hover {
-      transform: scale(1.05);
-    }
-
-    /* ====== SIDEBAR ====== */
+    /* ===== SIDEBAR ===== */
     .sidebar {
-      position: fixed;
-      left: 20px;
-      top: 100px;
-      width: 220px;
-      height: calc(100% - 140px);
+      width: 260px;
       padding: 20px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      z-index: 100;
       transition: transform 0.3s ease;
     }
 
-    .sidebar.hidden {
-      transform: translateX(-260px);
+    .sidebar.collapsed {
+      transform: translateX(-100%);
+    }
+
+    .sidebar h2 {
+      text-align: center;
+      font-size: 1.6em;
+      margin-bottom: 30px;
+      letter-spacing: 1px;
     }
 
     .nav-list {
@@ -139,7 +85,7 @@
     }
 
     .nav-item {
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
 
     .nav-item > button {
@@ -147,13 +93,13 @@
       background: transparent;
       border: none;
       color: #fff;
-      padding: 12px 14px;
+      padding: 12px 16px;
       text-align: left;
-      border-radius: 10px;
-      cursor: pointer;
-      font-size: 0.95em;
+      border-radius: 12px;
       display: flex;
       justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
       transition: background 0.3s ease;
     }
 
@@ -167,7 +113,7 @@
       max-height: 0;
       overflow: hidden;
       opacity: 0;
-      transition: all 0.4s ease;
+      transition: max-height 0.4s ease, opacity 0.3s ease;
     }
 
     .submenu.open {
@@ -176,7 +122,7 @@
     }
 
     .submenu li {
-      padding: 10px 28px;
+      padding: 10px 30px;
       color: #ccc;
       font-size: 0.9em;
       cursor: pointer;
@@ -188,23 +134,39 @@
       color: #fff;
     }
 
-    /* ====== MAIN CONTENT ====== */
+    /* ===== TOGGLE BUTTON ===== */
+    .toggle-btn {
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      color: #fff;
+      border-radius: 8px;
+      padding: 10px 12px;
+      cursor: pointer;
+      margin: 20px auto;
+      display: block;
+      transition: all 0.3s ease;
+    }
+
+    .toggle-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    /* ===== MAIN CONTENT ===== */
     .content {
+      flex: 1;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
+      flex-direction: column;
       text-align: center;
       padding: 40px;
-      width: 100%;
-      max-width: 800px;
-      margin-top: 120px;
+      transition: all 0.3s ease;
     }
 
     .content h1 {
       font-size: 2.8em;
       margin-bottom: 20px;
-      background: linear-gradient(90deg, #ffffff, #45a29e);
+      background: linear-gradient(to right, #ffffff, #66fcf1);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
@@ -212,63 +174,48 @@
     .content p {
       color: #ccc;
       line-height: 1.7;
-      font-size: 1em;
       max-width: 700px;
+      font-size: 1em;
     }
 
-    /* ====== MOBILE STYLING ====== */
-    .menu-btn {
-      display: none;
-      font-size: 1.5em;
-      background: rgba(255, 255, 255, 0.15);
-      border: none;
-      border-radius: 8px;
-      color: #fff;
-      padding: 8px 12px;
-      cursor: pointer;
-      transition: all 0.3s ease;
+    /* ===== SCROLLBAR ===== */
+    ::-webkit-scrollbar {
+      width: 6px;
     }
 
-    .menu-btn:hover {
-      background: rgba(255, 255, 255, 0.25);
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 4px;
     }
 
+    /* ===== RESPONSIVE ===== */
     @media (max-width: 1024px) {
       body {
         flex-direction: column;
-        justify-content: flex-start;
-        align-items: center;
-        overflow-y: auto;
-      }
-
-      .navbar {
-        width: 95%;
       }
 
       .sidebar {
         position: fixed;
-        top: 80px;
+        top: 0;
         left: 0;
-        height: calc(100% - 80px);
-        width: 220px;
-        transform: translateX(-260px);
+        height: 100%;
+        width: 260px;
+        transform: translateX(-100%);
       }
 
       .sidebar.show {
         transform: translateX(0);
       }
 
-      .menu-btn {
-        display: inline-block;
-      }
-
-      .nav-search input {
-        width: 100%;
+      .toggle-btn {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        z-index: 200;
       }
 
       .content {
-        margin-top: 160px;
-        padding: 20px;
+        padding: 100px 20px;
       }
     }
 
@@ -283,62 +230,60 @@
     }
   </style>
 </head>
+
 <body>
-
-  <!-- Navbar -->
-  <header class="glass-card navbar">
-    <div class="logo">GlassUI</div>
-    <div class="nav-search">
-      <input type="text" placeholder="Search...">
-    </div>
-    <div class="nav-profile">
-      <button class="menu-btn" id="menuBtn">☰</button>
-      <img src="https://i.pravatar.cc/150?img=3" alt="Profile">
-    </div>
-  </header>
-
   <!-- Sidebar -->
   <aside class="glass-card sidebar" id="sidebar">
-    <ul class="nav-list">
-      <li class="nav-item">
-        <button class="expand-btn">Dashboard <span>▸</span></button>
-        <ul class="submenu">
-          <li>Overview</li>
-          <li>Reports</li>
-          <li>Analytics</li>
-        </ul>
-      </li>
-      <li class="nav-item">
-        <button class="expand-btn">Projects <span>▸</span></button>
-        <ul class="submenu">
-          <li>Active</li>
-          <li>Archived</li>
-        </ul>
-      </li>
-      <li class="nav-item">
-        <button class="expand-btn">Settings <span>▸</span></button>
-        <ul class="submenu">
-          <li>Profile</li>
-          <li>Security</li>
-          <li>Notifications</li>
-        </ul>
-      </li>
-    </ul>
+    <div>
+      <h2>Menu</h2>
+      <ul class="nav-list">
+        <li class="nav-item">
+          <button class="expand-btn">Dashboard <span>▸</span></button>
+          <ul class="submenu">
+            <li>Overview</li>
+            <li>Stats</li>
+            <li>Reports</li>
+          </ul>
+        </li>
+        <li class="nav-item">
+          <button class="expand-btn">Projects <span>▸</span></button>
+          <ul class="submenu">
+            <li>Active</li>
+            <li>Archived</li>
+          </ul>
+        </li>
+        <li class="nav-item">
+          <button class="expand-btn">Settings <span>▸</span></button>
+          <ul class="submenu">
+            <li>Profile</li>
+            <li>Security</li>
+            <li>Notifications</li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+
+    <button class="toggle-btn" id="toggleSidebar">☰</button>
   </aside>
 
   <!-- Main Content -->
   <main class="content">
-    <h1>Welcome to the Future</h1>
+    <h1>Welcome to the Glass Dashboard</h1>
     <p>
-      Experience a clean, centered, and futuristic dark glass dashboard.  
-      Designed to be responsive, elegant, and minimal — perfect for dashboards, portfolios, or admin panels.
+      A modern dark glassmorphism interface with centered layout, smooth animations,
+      and a responsive expandable sidebar. The subtle gradient background enhances
+      the glass blur for a futuristic aesthetic across devices.
     </p>
   </main>
 
   <script>
-    const expandBtns = document.querySelectorAll('.expand-btn');
     const sidebar = document.getElementById('sidebar');
-    const menuBtn = document.getElementById('menuBtn');
+    const toggleBtn = document.getElementById('toggleSidebar');
+    const expandBtns = document.querySelectorAll('.expand-btn');
+
+    toggleBtn.addEventListener('click', () => {
+      sidebar.classList.toggle('show');
+    });
 
     expandBtns.forEach(btn => {
       btn.addEventListener('click', () => {
@@ -349,13 +294,9 @@
       });
     });
 
-    menuBtn.addEventListener('click', () => {
-      sidebar.classList.toggle('show');
-    });
-
     // Close sidebar when clicking outside (mobile)
     document.addEventListener('click', (e) => {
-      if (!sidebar.contains(e.target) && !menuBtn.contains(e.target)) {
+      if (!sidebar.contains(e.target) && !toggleBtn.contains(e.target)) {
         sidebar.classList.remove('show');
       }
     });
