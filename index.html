@@ -1,42 +1,268 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Liquid Glass UI Demo</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Glass Dashboard Template</title>
 
-  <link rel="stylesheet" href="./assets/css/liquid-glass.css" />
-  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    /* ===== GLOBAL RESET ===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
 
-  <script>
-    window.LG_PROFILE = {
-      name: "Rudradev Pal",
-      github: "https://github.com/rudradevpal",
-      linkedin: "https://linkedin.com/in/rudradevpal",
-      photo: "https://github.com/rudradevpal.png",
-      sidebar: [
-        { name: "Tools", icon: "wrench", link: "./tools.html" },
-        { name: "Blogs", icon: "book-open-text", link: "./blogs.html" },
-        { name: "Documents", icon: "file-text", link: "./docs.html" },
-        { name: "About", icon: "user", link: "./about.html" }
-      ]
-    };
-  </script>
+    body {
+      background: radial-gradient(circle at top left, #0f2027, #203a43, #2c5364);
+      color: #fff;
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
 
-  <script src="./assets/js/liquid-glass.js" defer></script>
+    /* ===== GLASS CARD BASE (provided by user) ===== */
+    .glass-card {
+      width: 260px;
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.05),
+        inset 0 0 16px 8px rgba(255, 255, 255, 0.05);
+      overflow: hidden;
+    }
+
+    .glass-card::before,
+    .glass-card::after {
+      content: '';
+      position: absolute;
+    }
+
+    .glass-card::before {
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+    }
+
+    .glass-card::after {
+      top: 0; left: 0;
+      width: 1px;
+      height: 100%;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.5), transparent);
+    }
+
+    /* ===== SIDEBAR ===== */
+    .sidebar {
+      position: relative;
+      padding: 20px;
+      transition: width 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .sidebar.collapsed {
+      width: 80px;
+    }
+
+    .sidebar h2 {
+      font-size: 1.5em;
+      margin-bottom: 30px;
+      text-align: center;
+      letter-spacing: 1px;
+    }
+
+    .nav-list {
+      list-style: none;
+    }
+
+    .nav-item {
+      margin-bottom: 10px;
+    }
+
+    .nav-item > button {
+      width: 100%;
+      background: transparent;
+      border: none;
+      color: #fff;
+      padding: 12px 16px;
+      text-align: left;
+      border-radius: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .nav-item > button:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .submenu {
+      list-style: none;
+      margin-top: 5px;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, opacity 0.3s ease;
+      opacity: 0;
+    }
+
+    .submenu.open {
+      max-height: 200px;
+      opacity: 1;
+    }
+
+    .submenu li {
+      padding: 10px 30px;
+      color: #ccc;
+      font-size: 0.9em;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .submenu li:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+    }
+
+    /* ===== TOGGLE BUTTON ===== */
+    .toggle-btn {
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      color: #fff;
+      border-radius: 8px;
+      padding: 10px 12px;
+      cursor: pointer;
+      margin: 20px auto;
+      display: block;
+      transition: all 0.3s ease;
+    }
+
+    .toggle-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    /* ===== MAIN CONTENT ===== */
+    .content {
+      flex: 1;
+      padding: 40px;
+      overflow-y: auto;
+      position: relative;
+    }
+
+    .content h1 {
+      font-size: 2.5em;
+      margin-bottom: 20px;
+      background: linear-gradient(to right, #fff, #66fcf1);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .content p {
+      color: #ccc;
+      line-height: 1.6;
+      max-width: 700px;
+    }
+
+    /* ===== SCROLLBAR ===== */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 4px;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      body {
+        flex-direction: column;
+      }
+      .glass-card {
+        width: 100%;
+        height: auto;
+        border-radius: 0;
+      }
+      .sidebar {
+        flex-direction: row;
+        justify-content: space-between;
+      }
+    }
+
+  </style>
 </head>
 
 <body>
-  <div class="main">
-    <div class="card">
-      <div class="top-icons">
-        <div class="icon-btn" id="homeBtn"><i data-lucide="home"></i></div>
-        <div class="icon-btn" id="shareBtn"><i data-lucide="share-2"></i></div>
-      </div>
-
-      <h1>Welcome to Liquid Glass</h1>
-      <p>Responsive glassmorphism layout with sidebar, footer, and popup.</p>
+  <!-- Sidebar -->
+  <aside class="glass-card sidebar" id="sidebar">
+    <div>
+      <h2>Menu</h2>
+      <ul class="nav-list">
+        <li class="nav-item">
+          <button class="expand-btn">Dashboard <span>▸</span></button>
+          <ul class="submenu">
+            <li>Overview</li>
+            <li>Stats</li>
+            <li>Reports</li>
+          </ul>
+        </li>
+        <li class="nav-item">
+          <button class="expand-btn">Projects <span>▸</span></button>
+          <ul class="submenu">
+            <li>Active</li>
+            <li>Archived</li>
+          </ul>
+        </li>
+        <li class="nav-item">
+          <button class="expand-btn">Settings <span>▸</span></button>
+          <ul class="submenu">
+            <li>Profile</li>
+            <li>Security</li>
+            <li>Notifications</li>
+          </ul>
+        </li>
+      </ul>
     </div>
-  </div>
+
+    <button class="toggle-btn" id="toggleSidebar">☰</button>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="content">
+    <h1>Welcome to the Glass UI</h1>
+    <p>
+      This is a reusable modern dark-glass website template featuring expandable navigation,
+      smooth animations, and responsive design. You can easily extend the sidebar items,
+      change themes, or integrate with frameworks like React or Vue.
+    </p>
+  </main>
+
+  <script>
+    // Sidebar toggle
+    const sidebar = document.getElementById('sidebar');
+    const toggleBtn = document.getElementById('toggleSidebar');
+    toggleBtn.addEventListener('click', () => {
+      sidebar.classList.toggle('collapsed');
+    });
+
+    // Expandable submenus
+    const expandButtons = document.querySelectorAll('.expand-btn');
+    expandButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const submenu = btn.nextElementSibling;
+        submenu.classList.toggle('open');
+        const arrow = btn.querySelector('span');
+        arrow.textContent = submenu.classList.contains('open') ? '▾' : '▸';
+      });
+    });
+  </script>
 </body>
 </html>
