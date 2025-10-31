@@ -1,1 +1,42 @@
-Rudradev Pal
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Liquid Glass App</title>
+
+  <link rel="stylesheet" href="./assets/css/liquid-glass.css" />
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script>
+    window.LG_PROFILE = {
+      name: "Rudradev Pal",
+      github: "https://github.com/rudradevpal",
+      linkedin: "https://linkedin.com/in/rudradevpal",
+      photo: "https://github.com/rudradevpal.png",
+      sidebar: [
+        { name: "Tools", icon: "wrench", link: "./tools.html" },
+        { name: "Blogs", icon: "book-open-text", link: "./blogs.html" },
+        { name: "Documents", icon: "file-text", link: "./docs.html" },
+        { name: "About", icon: "user", link: "./about.html" }
+      ]
+    };
+  </script>
+
+  <script src="./assets/js/liquid-glass.js" defer></script>
+</head>
+
+<body>
+  <div class="main">
+    <div class="card">
+      <div class="top-icons">
+        <div class="icon-btn" id="homeBtn" title="Home"><i data-lucide="home"></i></div>
+        <div class="icon-btn" id="shareBtn" title="Share"><i data-lucide="share-2"></i></div>
+      </div>
+
+      <h1>Welcome to Liquid Glass</h1>
+      <p>A modular UI system with glassmorphism, icons, and navigation built in.</p>
+    </div>
+  </div>
+</body>
+</html>
