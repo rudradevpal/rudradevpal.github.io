@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Glass Dashboard Template</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Responsive Glass Dashboard</title>
 
   <style>
-    /* ===== GLOBAL RESET ===== */
+    /* ====== GLOBAL RESET ====== */
     * {
       margin: 0;
       padding: 0;
@@ -15,66 +15,68 @@
     }
 
     body {
-      background: radial-gradient(circle at top left, #0f2027, #203a43, #2c5364);
-      color: #fff;
       display: flex;
       height: 100vh;
       overflow: hidden;
+      background: radial-gradient(circle at top left, #1a2a6c, #b21f1f, #fdbb2d);
+      color: #fff;
     }
 
-    /* ===== GLASS CARD BASE (provided by user) ===== */
+    /* ====== GLASS CARD BASE ====== */
     .glass-card {
-      width: 260px;
       background: rgba(255, 255, 255, 0.08);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
       border-radius: 20px;
       border: 1px solid rgba(255, 255, 255, 0.2);
       box-shadow:
-        0 8px 32px rgba(0, 0, 0, 0.2),
-        inset 0 1px 0 rgba(255, 255, 255, 0.3),
-        inset 0 -1px 0 rgba(255, 255, 255, 0.05),
-        inset 0 0 16px 8px rgba(255, 255, 255, 0.05);
+        0 8px 32px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.05);
       overflow: hidden;
-    }
-
-    .glass-card::before,
-    .glass-card::after {
-      content: '';
-      position: absolute;
+      position: relative;
+      transition: all 0.3s ease;
     }
 
     .glass-card::before {
-      top: 0; left: 0; right: 0;
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
       height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent);
     }
 
     .glass-card::after {
-      top: 0; left: 0;
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
       width: 1px;
       height: 100%;
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.5), transparent);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.8), transparent);
     }
 
-    /* ===== SIDEBAR ===== */
+    /* ====== SIDEBAR ====== */
     .sidebar {
-      position: relative;
+      width: 260px;
       padding: 20px;
-      transition: width 0.3s ease;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      z-index: 100;
+      transition: width 0.3s ease, transform 0.3s ease;
     }
 
     .sidebar.collapsed {
-      width: 80px;
+      transform: translateX(-100%);
     }
 
     .sidebar h2 {
-      font-size: 1.5em;
-      margin-bottom: 30px;
       text-align: center;
+      font-size: 1.6em;
+      margin-bottom: 30px;
       letter-spacing: 1px;
     }
 
@@ -93,7 +95,7 @@
       color: #fff;
       padding: 12px 16px;
       text-align: left;
-      border-radius: 10px;
+      border-radius: 12px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -132,75 +134,100 @@
       color: #fff;
     }
 
-    /* ===== TOGGLE BUTTON ===== */
-    .toggle-btn {
-      background: rgba(255, 255, 255, 0.1);
-      border: none;
-      color: #fff;
-      border-radius: 8px;
-      padding: 10px 12px;
-      cursor: pointer;
-      margin: 20px auto;
-      display: block;
-      transition: all 0.3s ease;
-    }
-
-    .toggle-btn:hover {
-      background: rgba(255, 255, 255, 0.2);
-    }
-
-    /* ===== MAIN CONTENT ===== */
+    /* ====== MAIN CONTENT ====== */
     .content {
       flex: 1;
       padding: 40px;
       overflow-y: auto;
       position: relative;
+      transition: all 0.3s ease;
     }
 
     .content h1 {
       font-size: 2.5em;
       margin-bottom: 20px;
-      background: linear-gradient(to right, #fff, #66fcf1);
+      background: linear-gradient(to right, #ffffff, #66fcf1);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
 
     .content p {
-      color: #ccc;
-      line-height: 1.6;
+      color: #ddd;
       max-width: 700px;
+      line-height: 1.7;
     }
 
-    /* ===== SCROLLBAR ===== */
+    /* ====== TOGGLE BUTTON ====== */
+    .toggle-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: rgba(255, 255, 255, 0.15);
+      border: none;
+      color: #fff;
+      font-size: 1.4em;
+      padding: 10px 14px;
+      border-radius: 10px;
+      cursor: pointer;
+      z-index: 200;
+      transition: background 0.3s ease;
+      display: none;
+    }
+
+    .toggle-btn:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    /* ====== SCROLLBAR ====== */
     ::-webkit-scrollbar {
-      width: 6px;
+      width: 8px;
     }
 
     ::-webkit-scrollbar-thumb {
-      background: rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.3);
       border-radius: 4px;
     }
 
-    /* ===== RESPONSIVE ===== */
-    @media (max-width: 768px) {
+    /* ====== RESPONSIVE DESIGN ====== */
+    @media (max-width: 1024px) {
       body {
         flex-direction: column;
       }
-      .glass-card {
-        width: 100%;
-        height: auto;
-        border-radius: 0;
-      }
+
       .sidebar {
-        flex-direction: row;
-        justify-content: space-between;
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 260px;
+        transform: translateX(-100%);
+      }
+
+      .sidebar.show {
+        transform: translateX(0);
+      }
+
+      .toggle-btn {
+        display: block;
+      }
+
+      .content {
+        padding: 80px 20px;
       }
     }
 
+    @media (max-width: 600px) {
+      .content h1 {
+        font-size: 2em;
+      }
+      .content p {
+        font-size: 0.95em;
+      }
+    }
   </style>
 </head>
-
 <body>
+
   <!-- Sidebar -->
   <aside class="glass-card sidebar" id="sidebar">
     <div>
@@ -231,31 +258,29 @@
         </li>
       </ul>
     </div>
-
-    <button class="toggle-btn" id="toggleSidebar">☰</button>
   </aside>
+
+  <!-- Toggle Button -->
+  <button class="toggle-btn" id="menuToggle">☰</button>
 
   <!-- Main Content -->
   <main class="content">
     <h1>Welcome to the Glass UI</h1>
     <p>
-      This is a reusable modern dark-glass website template featuring expandable navigation,
-      smooth animations, and responsive design. You can easily extend the sidebar items,
-      change themes, or integrate with frameworks like React or Vue.
+      This responsive dark glassmorphism dashboard template is built with expandable navigation, smooth transitions, and adaptive design for all screen sizes. The glass blur and gradient background provide a modern aesthetic suitable for admin dashboards, portfolios, or landing pages.
     </p>
   </main>
 
   <script>
-    // Sidebar toggle
     const sidebar = document.getElementById('sidebar');
-    const toggleBtn = document.getElementById('toggleSidebar');
+    const toggleBtn = document.getElementById('menuToggle');
+    const expandBtns = document.querySelectorAll('.expand-btn');
+
     toggleBtn.addEventListener('click', () => {
-      sidebar.classList.toggle('collapsed');
+      sidebar.classList.toggle('show');
     });
 
-    // Expandable submenus
-    const expandButtons = document.querySelectorAll('.expand-btn');
-    expandButtons.forEach(btn => {
+    expandBtns.forEach(btn => {
       btn.addEventListener('click', () => {
         const submenu = btn.nextElementSibling;
         submenu.classList.toggle('open');
@@ -263,6 +288,14 @@
         arrow.textContent = submenu.classList.contains('open') ? '▾' : '▸';
       });
     });
+
+    // Close sidebar when clicking outside (mobile)
+    document.addEventListener('click', (e) => {
+      if (!sidebar.contains(e.target) && !toggleBtn.contains(e.target)) {
+        sidebar.classList.remove('show');
+      }
+    });
   </script>
+
 </body>
 </html>
