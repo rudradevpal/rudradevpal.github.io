@@ -44,7 +44,7 @@
 <script>
   async function loadSidebarData() {
     try {
-      const res = await fetch("/assets/files/metadata.json");
+      const res = await fetch("../files/metadata.json");
       if (!res.ok) throw new Error("Metadata fetch failed");
       const data = await res.json();
 
