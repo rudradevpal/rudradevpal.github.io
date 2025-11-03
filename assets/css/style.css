@@ -13,10 +13,18 @@ html, body {
 
 body {
   display: flex;
-  background: linear-gradient(135deg, #0a0f1f, #1b1b2f, #1f1c2c);
   color: #fff;
   font-family: 'Segoe UI', sans-serif;
   overflow-y: hidden;
+  background: radial-gradient(circle at 30% 20%, #162447, transparent 65%),
+            radial-gradient(circle at 80% 90%, #1b1b2f, transparent 60%),
+            linear-gradient(135deg, #0a0f1f, #1a1a2e, #1f1c2c);
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-blend-mode: screen, overlay, normal;
+  position: relative;
+  isolation: isolate;
 }
 
 /* ===== SIDEBAR ===== */
@@ -40,7 +48,12 @@ body {
 
 .glass-sidebar.collapsed {
   width: 80px;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
+  transition: width 0.4s ease, background 0.3s ease;
 }
+
 
 /* ===== PROFILE ===== */
 .profile {
@@ -52,6 +65,25 @@ body {
   padding-top: 60px;
   padding-bottom: 20px;
 }
+
+.profile .username,
+.profile .subtitle {
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  font-size: 1.1rem;
+  margin-bottom: 8px; /* ✅ Adds space between name and subtitle */
+  transition: opacity 0.3s ease;
+}
+
+.profile .subtitle {
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 0.9rem;
+  line-height: 1.3;
+}
+
+.profile .avatar img {
+  margin-bottom: 14px; /* Slightly more breathing room below avatar */
+}
+
 
 .avatar {
   width: 100px;
@@ -82,11 +114,6 @@ body {
 .glass-sidebar.collapsed .profile {
   padding-top: 25px;
   padding-bottom: 10px;
-}
-
-.glass-sidebar.collapsed .username {
-  opacity: 0;
-  pointer-events: none;
 }
 
 /* ===== NAVIGATION ===== */
@@ -303,7 +330,7 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 20px;
   backdrop-filter: blur(14px);
-  padding: 30px;
+  padding: 40px 32px; /* ⬅️ more generous padding inside */
   text-align: left;
   color: #fff;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
@@ -316,26 +343,42 @@ body {
 }
 
 .card i[data-lucide] {
-  width: 36px;
-  height: 36px;
-  margin-bottom: 15px;
+  width: 48px;
+  height: 48px;
   color: #66fcf1;
   opacity: 0.9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 35px; /* ✅ real visible space after the icon */
+  flex-shrink: 0;
+  line-height: 0;
 }
 
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* ✅ ensures proper top-down stacking */
+  align-items: flex-start;     /* ✅ keeps icon left-aligned with text */
+  gap: 10px; /* ✅ optional gentle breathing space between stacked elements */
+}
+
+
+
 .card h2 {
-  font-size: 1.3rem;
-  margin-bottom: 8px;
+  font-size: 1.4rem;
+  margin-bottom: 12px; /* ⬅️ more room below heading */
   font-weight: 600;
   color: #fff;
 }
 
 .card p {
   color: #d8dee9;
-  font-size: 0.95rem;
-  line-height: 1.5;
-  margin-bottom: 25px;
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 30px; /* ⬅️ extra space before button */
 }
+
 
 /* Stylish glass button inside cards */
 .card .btn {
@@ -460,7 +503,7 @@ body {
 /* ===== COLLAPSED FIX ===== */
 .glass-sidebar.collapsed ~ .main-content {
   margin-left: 80px;
-  padding: 80px 40px;
+  transition: margin-left 0.4s ease;
 }
 
 /* ===== RESPONSIVE ===== */
@@ -485,4 +528,35 @@ body {
   .toggle-btn {
     display: block;
   }
+}
+
+/* === FINAL FIX: Force hide text on collapse === */
+.glass-sidebar .profile .hidden {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  height: 0 !important;
+  overflow: hidden !important;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+/* === BULLETPROOF HIDE FIX === */
+.glass-sidebar .profile .username.hidden,
+.glass-sidebar .profile .subtitle.hidden {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  height: 0 !important;
+  overflow: hidden !important;
+  margin: 0 !important;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+/* Rotate collapse chevron when sidebar is collapsed */
+.collapse-btn i[data-lucide="chevrons-left"] {
+  transition: transform 0.3s ease;
+}
+
+.glass-sidebar.collapsed .collapse-btn i[data-lucide="chevrons-left"] {
+  transform: rotate(180deg);
 }
