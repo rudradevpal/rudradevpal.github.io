@@ -560,3 +560,206 @@ body {
 .glass-sidebar.collapsed .collapse-btn i[data-lucide="chevrons-left"] {
   transform: rotate(180deg);
 }
+
+/* =========================================================
+   BLOG TYPOGRAPHY SYSTEM — Refynd Glass Blog Edition
+   ========================================================= */
+
+.glass-blog {
+  max-width: 900px;
+  margin: 0 auto 100px;
+  padding: 60px 70px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+  text-align: left;
+  color: rgba(255, 255, 255, 0.92);
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  line-height: 1.8;
+  font-size: 1.08rem;
+  letter-spacing: 0.2px;
+}
+
+/* ===== HEADINGS ===== */
+.glass-blog h1, 
+.glass-blog h2, 
+.glass-blog h3, 
+.glass-blog h4, 
+.glass-blog h5, 
+.glass-blog h6 {
+  font-family: "Segoe UI", system-ui, sans-serif;
+  font-weight: 600;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  line-height: 1.3;
+}
+
+.glass-blog h1 {
+  font-size: 2.4rem;
+  background: linear-gradient(to right, #ffffff, #66fcf1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 1.5rem;
+}
+
+.glass-blog h2 {
+  font-size: 1.8rem;
+  color: #66fcf1;
+  border-left: 4px solid rgba(102, 252, 241, 0.5);
+  padding-left: 12px;
+}
+
+.glass-blog h3 {
+  font-size: 1.45rem;
+  color: #b8f6ef;
+}
+
+.glass-blog h4 {
+  font-size: 1.2rem;
+  color: #b8f6ef;
+  opacity: 0.9;
+}
+
+/* ===== PARAGRAPHS ===== */
+.glass-blog p {
+  margin-bottom: 1.4rem;
+  color: rgba(255, 255, 255, 0.88);
+  line-height: 1.9;
+  word-spacing: 0.5px;
+}
+
+.glass-blog strong {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.glass-blog em {
+  color: #b8f6ef;
+  font-style: italic;
+}
+
+/* ===== LINKS ===== */
+.glass-blog a {
+  color: #66fcf1;
+  text-decoration: none;
+  border-bottom: 1px dashed rgba(102, 252, 241, 0.4);
+  transition: color 0.3s ease, border 0.3s ease;
+}
+.glass-blog a:hover {
+  color: #b8f6ef;
+  border-bottom-color: rgba(102, 252, 241, 0.8);
+}
+
+/* ===== LISTS ===== */
+.glass-blog ul,
+.glass-blog ol {
+  margin: 1.2rem 0 1.8rem 1.6rem;
+  padding-left: 1rem;
+}
+.glass-blog li {
+  margin-bottom: 0.6rem;
+}
+.glass-blog ul li::marker {
+  color: #66fcf1;
+}
+.glass-blog ol {
+  counter-reset: item;
+}
+.glass-blog ol li::marker {
+  color: #b8f6ef;
+  font-weight: bold;
+}
+
+/* ===== BLOCKQUOTE ===== */
+.glass-blog blockquote {
+  margin: 2rem 0;
+  padding: 25px 35px;
+  border-left: 4px solid #66fcf1;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.7;
+  box-shadow: inset 0 0 25px rgba(255, 255, 255, 0.05);
+}
+.glass-blog blockquote span {
+  display: block;
+  margin-top: 10px;
+  color: #66fcf1;
+  font-weight: 500;
+}
+
+/* ===== CODE BLOCKS ===== */
+.glass-blog pre {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 18px 22px;
+  border-radius: 14px;
+  margin: 1.8rem 0;
+  overflow-x: auto;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  font-size: 0.95rem;
+  line-height: 1.7;
+  font-family: "Fira Code", monospace;
+  box-shadow: inset 0 0 15px rgba(0,0,0,0.25);
+}
+.glass-blog code {
+  background: rgba(102, 252, 241, 0.15);
+  color: #66fcf1;
+  padding: 3px 6px;
+  border-radius: 6px;
+  font-size: 0.93rem;
+  font-family: "Fira Code", monospace;
+}
+.glass-blog pre code {
+  background: transparent;
+  color: #e0e0e0;
+}
+
+/* ===== IMAGES & CAPTIONS ===== */
+.glass-blog img {
+  width: 100%;
+  border-radius: 16px;
+  margin: 2rem 0;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+}
+.glass-blog figcaption {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 0.9rem;
+  margin-top: -10px;
+  margin-bottom: 2rem;
+  font-style: italic;
+}
+
+/* ===== HORIZONTAL RULE ===== */
+.glass-blog hr {
+  border: none;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.2);
+  margin: 2.5rem 0;
+}
+
+/* ===== TEXT SELECTION ===== */
+::selection {
+  background: rgba(102, 252, 241, 0.3);
+  color: #0a0f1f;
+}
+
+/* ===== RESPONSIVE READABILITY ===== */
+@media (max-width: 900px) {
+  .glass-blog {
+    padding: 40px 25px;
+    font-size: 1rem;
+  }
+  .glass-blog h1 {
+    font-size: 2rem;
+  }
+  .glass-blog h2 {
+    font-size: 1.6rem;
+  }
+  .glass-blog h3 {
+    font-size: 1.3rem;
+  }
+}
