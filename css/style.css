@@ -368,6 +368,81 @@ body {
   background: rgba(255, 255, 255, 0.12);
 }
 
+/* ===== BLOG CARDS GRID ===== */
+#blogsList {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.2rem;
+  margin-top: 2rem;
+  justify-content: start; /* ✅ aligns cards from the left */
+  align-items: start;
+  width: 100%;
+  padding: 0 1rem;
+}
+
+
+.blog-card {
+  padding: 1.2rem 1.4rem;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 18px;
+  width: 100%;
+  max-width: 100%;
+  text-align: left;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+}
+
+.blog-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 0 18px rgba(102, 252, 241, 0.25);
+  border-color: rgba(102, 252, 241, 0.3);
+}
+
+.blog-card h2 {
+  font-size: 1.2rem;
+  margin-bottom: 0.6rem;
+  color: #fff;
+}
+
+.blog-card p {
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+.blog-card a {
+  display: inline-block;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  text-decoration: none;
+  color: #66fcf1;
+  border: 1px solid rgba(102, 252, 241, 0.3);
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  transition: all 0.3s ease;
+}
+
+.blog-card a:hover {
+  background: rgba(102, 252, 241, 0.1);
+  border-color: rgba(102, 252, 241, 0.5);
+}
+
+.blog-card {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeUp 0.4s ease forwards;
+}
+
+@keyframes fadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
 /* Responsive tweaks */
 @media (max-width: 768px) {
   .cards {
