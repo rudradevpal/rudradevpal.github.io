@@ -1,9 +1,10 @@
 <aside class="glass-sidebar" id="sidebar">
   <div class="profile">
     <div class="avatar">
-      <img src="https://i.pravatar.cc/200?img=13" alt="User" />
+      <img id="sidebar-avatar" src="" alt="User" />
     </div>
-    <h2 class="username">Refynd</h2>
+    <h2 class="username" id="sidebar-name">Loading...</h2>
+    <p class="subtitle" id="sidebar-subtitle">Please wait...</p>
   </div>
 
   <nav class="nav-menu">
@@ -39,3 +40,27 @@
 <button id="toggleSidebar" class="toggle-btn">
   <i data-lucide="menu"></i>
 </button>
+
+<script>
+  async function loadSidebarData() {
+    try {
+      const res = await fetch("/assets/files/metadata.json");
+      if (!res.ok) throw new Error("Metadata fetch failed");
+      const data = await res.json();
+
+      // Update sidebar fields
+      document.getElementById("sidebar-avatar").src = data.avatar;
+      document.getElementById("sidebar-avatar").alt = data.name;
+      document.getElementById("sidebar-name").textContent = data.name;
+      document.getElementById("sidebar-subtitle").textContent = data.subtitle;
+
+      // Initialize Lucide icons
+      lucide.createIcons();
+    } catch (err) {
+      console.error("❌ Failed to load metadata:", err);
+    }
+  }
+
+  // Run after DOM is ready
+  document.addEventListener("DOMContentLoaded", loadSidebarData);
+</script>
