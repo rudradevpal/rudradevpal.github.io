@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   try {
     // Load the shared navbar
-    const response = await fetch(`${prefix}components/navbar.html`);
+    const response = await fetch(`${prefix}assets/components/navbar.html`);
     const html = await response.text();
 
     const tempDiv = document.createElement("div");
