@@ -1,5 +1,5 @@
 // === dynamic-list.js ===
-// Lists .html files from /blogs or /tools directory using GitHub API (with local fallback)
+// Fetches blog/tool .html file data (no rendering)
 
 document.addEventListener("DOMContentLoaded", async () => {
   const thisScript =
@@ -10,34 +10,24 @@ document.addEventListener("DOMContentLoaded", async () => {
     thisScript?.getAttribute("data-dir") ||
     (window.location.pathname.includes("/tools/") ? "tools" : "blogs");
 
-  const listContainer = document.getElementById(`${dir}List`);
-  const searchInput = document.getElementById("searchBar");
-
-  if (!listContainer) {
-    console.warn(`⚠️ No list container found for "${dir}"`);
-    return;
-  }
-
-  let files = [];
-  const hostname = window.location.hostname;
-  const isGitHub = hostname.endsWith("github.io");
-
   try {
-    if (isGitHub) {
-      // --- Detect owner + repo correctly ---
-      const owner = hostname.split(".")[0]; // e.g. "rudradevpal"
-      const pathnameParts = window.location.pathname.split("/").filter(Boolean);
+    const hostname = window.location.hostname;
+    const isGitHub = hostname.endsWith("github.io");
+    // const isGitHub = true; // Force GitHub fetch for testing
 
-      // CASE 1: user site (rudradevpal.github.io)
-      // CASE 2: project site (rudradevpal.github.io/refynd/)
+    let files = [];
+
+    if (isGitHub) {
+      // --- GitHub Pages API fetch ---
+      const owner = hostname.split(".")[0];
+      const pathnameParts = window.location.pathname.split("/").filter(Boolean);
       const repo =
         hostname === `${owner}.github.io`
           ? `${owner}.github.io`
           : pathnameParts[0];
 
       const apiURL = `https://api.github.com/repos/${owner}/${repo}/contents/${dir}`;
-      console.log("🔗 Fetching from GitHub API:", apiURL);
-
+      // const apiURL = `https://api.github.com/repos/rudradevpal/rudradevpal.github.io/contents/${dir}`;
       const res = await fetch(apiURL);
       const data = await res.json();
 
@@ -52,14 +42,9 @@ document.addEventListener("DOMContentLoaded", async () => {
                 : "Try this tool built by Refynd.",
             file: f.name,
           }));
-      } else {
-        console.warn("⚠️ Unexpected API response:", data);
       }
-    }
-
-    // --- Fallback for local testing ---
-    if (!files.length) {
-      console.log("⚙️ Falling back to local directory scraping...");
+    } else {
+      // --- Local server fallback ---
       const res = await fetch(`../${dir}/`);
       const html = await res.text();
       const matches = [...html.matchAll(/href="([^"]+\.html)"/g)];
@@ -76,41 +61,16 @@ document.addEventListener("DOMContentLoaded", async () => {
         }));
     }
 
-    renderList(files);
+    // Expose globally
+    window[`${dir}Data`] = files;
+    console.log(`✅ Loaded ${files.length} ${dir}`);
 
-    // --- Search Filter ---
-    searchInput?.addEventListener("input", e => {
-      const q = e.target.value.toLowerCase();
-      renderList(files.filter(f => f.title.toLowerCase().includes(q)));
-    });
+    // Dispatch event so that renderer knows data is ready
+    document.dispatchEvent(new CustomEvent(`${dir}Loaded`, { detail: files }));
   } catch (err) {
     console.error("Error loading list:", err);
-    listContainer.innerHTML = `<p style="color:#ccc;">⚠️ Unable to list ${dir}. Check console for details.</p>`;
   }
 
-  // --- Render Cards ---
-  function renderList(files) {
-    listContainer.innerHTML = "";
-    if (!files.length) {
-      listContainer.innerHTML = `<p style="color:#aaa;">No ${dir} found.</p>`;
-      return;
-    }
-
-    files.forEach(file => {
-      const card = document.createElement("a");
-      card.className = "card";
-      card.href = `./${file.file}`;
-      card.innerHTML = `
-        <i data-lucide="${dir === "blogs" ? "file-text" : "wrench"}"></i>
-        <h2>${file.title}</h2>
-        <p>${file.desc}</p>
-      `;
-      listContainer.appendChild(card);
-    });
-    lucide.createIcons();
-  }
-
-  // --- Format File Names ---
   function formatTitle(name) {
     return name
       .replace(".html", "")
