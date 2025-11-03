@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blogs | Refynd</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+  <!-- Sidebar + Navigation (same as above) -->
+  <aside class="glass-sidebar" id="sidebar">
+    <div class="profile">
+      <div class="avatar"><img src="https://i.pravatar.cc/200?img=13" alt="User" /></div>
+      <h2 class="username">Refynd</h2>
+    </div>
+    <nav class="nav-menu">
+      <ul class="nav-list">
+        <li><a href="../index.html"><i data-lucide="home"></i> <span>Home</span></a></li>
+        <li><a href="../blogs/index.html" class="active"><i data-lucide="file-text"></i> <span>Blogs</span></a></li>
+        <li><a href="../tools/index.html"><i data-lucide="tool"></i> <span>Tools</span></a></li>
+        <li><a href="../about.html"><i data-lucide="info"></i> <span>About</span></a></li>
+      </ul>
+    </nav>
+    <button class="collapse-btn" id="collapseBtn"><i data-lucide="chevrons-left"></i></button>
+  </aside>
+
+  <button id="toggleSidebar" class="toggle-btn"><i data-lucide="menu"></i></button>
+
+<main class="main-content">
+  <header>
+    <h1>Developer Tools</h1>
+    <p>Practical utilities and playgrounds built into Refynd.</p>
+    <input type="text" id="searchBar" placeholder="Search tools..." class="glass-search" />
+  </header>
+
+  <section id="toolList" class="cards"></section>
+</main>
+
+  <script src="../js/script.js"></script>
+  <script src="../js/dynamic-list.js" data-dir="tools"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>
