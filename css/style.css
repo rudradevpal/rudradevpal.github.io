@@ -1,0 +1,413 @@
+/* ===== RESET ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  display: flex;
+  background: linear-gradient(135deg, #0a0f1f, #1b1b2f, #1f1c2c);
+  color: #fff;
+  font-family: 'Segoe UI', sans-serif;
+  overflow-y: hidden;
+}
+
+/* ===== SIDEBAR ===== */
+.glass-sidebar {
+  width: 260px;
+  height: 100vh;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: width 0.4s ease, transform 0.4s ease;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  overflow: hidden;
+}
+
+.glass-sidebar.collapsed {
+  width: 80px;
+}
+
+/* ===== PROFILE ===== */
+.profile {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: all 0.3s ease;
+  padding-top: 60px;
+  padding-bottom: 20px;
+}
+
+.avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  margin: 0 auto 10px;
+  transition: all 0.3s ease;
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.username {
+  font-size: 1.1rem;
+  transition: opacity 0.3s ease;
+}
+
+.glass-sidebar.collapsed .avatar {
+  width: 55px;
+  height: 55px;
+}
+
+.glass-sidebar.collapsed .profile {
+  padding-top: 25px;
+  padding-bottom: 10px;
+}
+
+.glass-sidebar.collapsed .username {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ===== NAVIGATION ===== */
+.nav-menu {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  transition: all 0.4s ease;
+}
+
+.nav-list {
+  list-style: none;
+  width: 100%;
+  padding: 0 10px;
+}
+
+.nav-item {
+  margin-bottom: 8px;
+}
+
+.nav-link {
+  width: 100%;
+  background: transparent;
+  color: #fff;
+  text-decoration: none;
+  padding: 12px 14px;
+  border-radius: 10px;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.3s ease;
+  position: relative;
+}
+
+.nav-link:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+}
+
+.nav-link i[data-lucide]:first-child {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  color: #fff;
+}
+
+.nav-link span {
+  margin-left: 10px;
+  white-space: nowrap;
+  transition: opacity 0.3s ease;
+  flex: 1;
+  text-align: left;
+}
+
+.nav-link.active {
+  background: rgba(255, 255, 255, 0.18);
+  box-shadow: 0 0 8px rgba(102, 252, 241, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* ===== COLLAPSED SIDEBAR ===== */
+.glass-sidebar.collapsed .nav-link {
+  justify-content: center;
+  padding: 0;
+  height: 45px;
+  width: 45px;
+  margin: 8px auto;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.glass-sidebar.collapsed .nav-link:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateY(-2px);
+}
+
+.glass-sidebar.collapsed .nav-link span {
+  display: none;
+}
+
+.glass-sidebar.collapsed .nav-menu {
+  justify-content: center;
+  align-items: center;
+}
+
+/* ===== COLLAPSE BUTTON ===== */
+.collapse-btn {
+  width: calc(100% - 28px);
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: #fff;
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.3s ease;
+  margin: 10px auto 25px;
+}
+
+.collapse-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.glass-sidebar.collapsed .collapse-btn {
+  justify-content: center;
+  padding: 0;
+  height: 45px;
+  width: 45px;
+  margin: 8px auto 25px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+
+.glass-sidebar.collapsed .collapse-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateY(-2px);
+}
+
+/* ===== MOBILE TOGGLE ===== */
+.toggle-btn {
+  display: none;
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  background: rgba(255, 255, 255, 0.15);
+  border: none;
+  color: #fff;
+  border-radius: 8px;
+  font-size: 1.6em;
+  padding: 8px 12px;
+  cursor: pointer;
+  z-index: 200;
+}
+
+.toggle-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* ===== GLASS SEARCH BAR ===== */
+.glass-search {
+  width: 100%;
+  max-width: 500px;
+  margin: 30px auto 50px;
+  padding: 14px 18px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  font-size: 1rem;
+  outline: none;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+}
+
+.glass-search::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.glass-search:focus {
+  border-color: #66fcf1;
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 10px rgba(102, 252, 241, 0.3);
+}
+
+/* ===== MAIN CONTENT ===== */
+.main-content {
+  margin-left: 260px;
+  flex: 1;
+  min-height: 100vh;
+  overflow-y: auto;
+  padding: 80px 60px;
+  transition: all 0.4s ease;
+  text-align: center;
+  background: radial-gradient(circle at top left, rgba(255,255,255,0.03), transparent 70%);
+}
+
+.main-content header {
+  margin-bottom: 50px;
+}
+
+.main-content header h1 {
+  font-size: 2.6rem;
+  background: linear-gradient(to right, #fff, #66fcf1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 12px;
+}
+
+.main-content header p {
+  color: #bbb;
+  font-size: 1.1rem;
+  letter-spacing: 0.3px;
+}
+
+/* ===== HOME PAGE CARDS ===== */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+  max-width: 1100px;
+  margin: 60px auto;
+  padding: 0 20px;
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 20px;
+  backdrop-filter: blur(14px);
+  padding: 30px;
+  text-align: left;
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  transition: all 0.35s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+}
+
+.card i[data-lucide] {
+  width: 36px;
+  height: 36px;
+  margin-bottom: 15px;
+  color: #66fcf1;
+  opacity: 0.9;
+}
+
+.card h2 {
+  font-size: 1.3rem;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.card p {
+  color: #d8dee9;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-bottom: 25px;
+}
+
+/* Stylish glass button inside cards */
+.card .btn {
+  align-self: flex-start;
+  background: linear-gradient(135deg, rgba(102, 252, 241, 0.15), rgba(69, 162, 158, 0.15));
+  border: 1px solid rgba(102, 252, 241, 0.4);
+  border-radius: 12px;
+  color: #66fcf1;
+  padding: 10px 18px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+}
+
+.card .btn:hover {
+  background: linear-gradient(135deg, #66fcf1, #45a29e);
+  color: #0b0c10;
+  transform: translateY(-2px);
+  box-shadow: 0 0 15px rgba(102, 252, 241, 0.4);
+}
+
+/* Hover glow effect for cards */
+.card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(102, 252, 241, 0.25);
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  .cards {
+    gap: 20px;
+  }
+  .card {
+    padding: 25px;
+  }
+  .card h2 {
+    font-size: 1.1rem;
+  }
+}
+
+
+/* ===== COLLAPSED FIX ===== */
+.glass-sidebar.collapsed ~ .main-content {
+  margin-left: 80px;
+  padding: 80px 40px;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1024px) {
+  .glass-sidebar {
+    transform: translateX(-100%);
+  }
+
+  .glass-sidebar.show {
+    transform: translateX(0);
+  }
+
+  .collapse-btn {
+    display: none !important;
+  }
+
+  .main-content {
+    margin-left: 0;
+    padding: 100px 20px;
+  }
+
+  .toggle-btn {
+    display: block;
+  }
+}
