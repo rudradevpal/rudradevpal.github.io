@@ -3,303 +3,52 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Glass Dashboard</title>
-
-  <style>
-    /* ===== GLOBAL RESET ===== */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Poppins', sans-serif;
-    }
-
-    body {
-      display: flex;
-      height: 100vh;
-      overflow: hidden;
-      background: radial-gradient(circle at center, #0f2027 0%, #203a43 35%, #0a0a0a 100%);
-      color: #fff;
-    }
-
-    /* ===== GLASS CARD BASE ===== */
-    .glass-card {
-      background: rgba(255, 255, 255, 0.08);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border-radius: 20px;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      box-shadow:
-        0 8px 32px rgba(0, 0, 0, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.3),
-        inset 0 -1px 0 rgba(255, 255, 255, 0.05);
-      overflow: hidden;
-      position: relative;
-      transition: all 0.3s ease;
-    }
-
-    .glass-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-    }
-
-    .glass-card::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 1px;
-      height: 100%;
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.5), transparent);
-    }
-
-    /* ===== SIDEBAR ===== */
-    .sidebar {
-      width: 260px;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      z-index: 100;
-      transition: transform 0.3s ease;
-    }
-
-    .sidebar.collapsed {
-      transform: translateX(-100%);
-    }
-
-    .sidebar h2 {
-      text-align: center;
-      font-size: 1.6em;
-      margin-bottom: 30px;
-      letter-spacing: 1px;
-    }
-
-    .nav-list {
-      list-style: none;
-    }
-
-    .nav-item {
-      margin-bottom: 10px;
-    }
-
-    .nav-item > button {
-      width: 100%;
-      background: transparent;
-      border: none;
-      color: #fff;
-      padding: 12px 16px;
-      text-align: left;
-      border-radius: 12px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-
-    .nav-item > button:hover {
-      background: rgba(255, 255, 255, 0.1);
-    }
-
-    .submenu {
-      list-style: none;
-      margin-top: 5px;
-      max-height: 0;
-      overflow: hidden;
-      opacity: 0;
-      transition: max-height 0.4s ease, opacity 0.3s ease;
-    }
-
-    .submenu.open {
-      max-height: 200px;
-      opacity: 1;
-    }
-
-    .submenu li {
-      padding: 10px 30px;
-      color: #ccc;
-      font-size: 0.9em;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-
-    .submenu li:hover {
-      background: rgba(255, 255, 255, 0.08);
-      color: #fff;
-    }
-
-    /* ===== TOGGLE BUTTON ===== */
-    .toggle-btn {
-      background: rgba(255, 255, 255, 0.1);
-      border: none;
-      color: #fff;
-      border-radius: 8px;
-      padding: 10px 12px;
-      cursor: pointer;
-      margin: 20px auto;
-      display: block;
-      transition: all 0.3s ease;
-    }
-
-    .toggle-btn:hover {
-      background: rgba(255, 255, 255, 0.2);
-    }
-
-    /* ===== MAIN CONTENT ===== */
-    .content {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      text-align: center;
-      padding: 40px;
-      transition: all 0.3s ease;
-    }
-
-    .content h1 {
-      font-size: 2.8em;
-      margin-bottom: 20px;
-      background: linear-gradient(to right, #ffffff, #66fcf1);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .content p {
-      color: #ccc;
-      line-height: 1.7;
-      max-width: 700px;
-      font-size: 1em;
-    }
-
-    /* ===== SCROLLBAR ===== */
-    ::-webkit-scrollbar {
-      width: 6px;
-    }
-
-    ::-webkit-scrollbar-thumb {
-      background: rgba(255, 255, 255, 0.2);
-      border-radius: 4px;
-    }
-
-    /* ===== RESPONSIVE ===== */
-    @media (max-width: 1024px) {
-      body {
-        flex-direction: column;
-      }
-
-      .sidebar {
-        position: fixed;
-        top: 0;
-        left: 0;
-        height: 100%;
-        width: 260px;
-        transform: translateX(-100%);
-      }
-
-      .sidebar.show {
-        transform: translateX(0);
-      }
-
-      .toggle-btn {
-        position: fixed;
-        top: 20px;
-        left: 20px;
-        z-index: 200;
-      }
-
-      .content {
-        padding: 100px 20px;
-      }
-    }
-
-    @media (max-width: 600px) {
-      .content h1 {
-        font-size: 2em;
-      }
-
-      .content p {
-        font-size: 0.9em;
-      }
-    }
-  </style>
+  <title>Refynd</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 
 <body>
-  <!-- Sidebar -->
-  <aside class="glass-card sidebar" id="sidebar">
-    <div>
-      <h2>Menu</h2>
-      <ul class="nav-list">
-        <li class="nav-item">
-          <button class="expand-btn">Dashboard <span>▸</span></button>
-          <ul class="submenu">
-            <li>Overview</li>
-            <li>Stats</li>
-            <li>Reports</li>
-          </ul>
-        </li>
-        <li class="nav-item">
-          <button class="expand-btn">Projects <span>▸</span></button>
-          <ul class="submenu">
-            <li>Active</li>
-            <li>Archived</li>
-          </ul>
-        </li>
-        <li class="nav-item">
-          <button class="expand-btn">Settings <span>▸</span></button>
-          <ul class="submenu">
-            <li>Profile</li>
-            <li>Security</li>
-            <li>Notifications</li>
-          </ul>
-        </li>
-      </ul>
-    </div>
-
-    <button class="toggle-btn" id="toggleSidebar">☰</button>
-  </aside>
+  <!-- Sidebar is dynamically injected by main.js -->
 
   <!-- Main Content -->
-  <main class="content">
-    <h1>Welcome to the Glass Dashboard</h1>
-    <p>
-      A modern dark glassmorphism interface with centered layout, smooth animations,
-      and a responsive expandable sidebar. The subtle gradient background enhances
-      the glass blur for a futuristic aesthetic across devices.
-    </p>
+  <main class="main-content" id="main-content">
+    <header>
+      <h1>Welcome to Refynd</h1>
+      <p>Minimal. Modern. Glassmorphic dashboard.</p>
+    </header>
+
+    <section class="cards">
+      <div class="card">
+        <i data-lucide="file-text"></i>
+        <h2>Explore Blogs</h2>
+        <p>Read tutorials, stories, and insights from the Refynd collection.</p>
+        <a href="blogs/index.html" class="btn primary" style="margin-top:10px;">
+          <i data-lucide="arrow-right"></i> View Blogs
+        </a>
+      </div>
+
+      <div class="card">
+        <i data-lucide="tool"></i>
+        <h2>Discover Tools</h2>
+        <p>Useful web utilities and design tools built by Refynd.</p>
+        <a href="tools/index.html" class="btn primary" style="margin-top:10px;">
+          <i data-lucide="arrow-right"></i> Browse Tools
+        </a>
+      </div>
+
+      <div class="card">
+        <i data-lucide="info"></i>
+        <h2>About Refynd</h2>
+        <p>Learn about the vision and inspiration behind Refynd.</p>
+        <a href="about.html" class="btn primary" style="margin-top:10px;">
+          <i data-lucide="arrow-right"></i> About
+        </a>
+      </div>
+    </section>
   </main>
 
-  <script>
-    const sidebar = document.getElementById('sidebar');
-    const toggleBtn = document.getElementById('toggleSidebar');
-    const expandBtns = document.querySelectorAll('.expand-btn');
-
-    toggleBtn.addEventListener('click', () => {
-      sidebar.classList.toggle('show');
-    });
-
-    expandBtns.forEach(btn => {
-      btn.addEventListener('click', () => {
-        const submenu = btn.nextElementSibling;
-        submenu.classList.toggle('open');
-        const arrow = btn.querySelector('span');
-        arrow.textContent = submenu.classList.contains('open') ? '▾' : '▸';
-      });
-    });
-
-    // Close sidebar when clicking outside (mobile)
-    document.addEventListener('click', (e) => {
-      if (!sidebar.contains(e.target) && !toggleBtn.contains(e.target)) {
-        sidebar.classList.remove('show');
-      }
-    });
-  </script>
+  <!-- JS -->
+  <script src="js/main.js"></script>
 </body>
 </html>
