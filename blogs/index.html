@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blogs | Refynd</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+  <!-- Sidebar will be injected automatically -->
+  <div id="sidebar-container"></div>
+
+  <main class="main-content">
+    <header>
+      <h1>Blog Articles</h1>
+      <p>Insights, tutorials, and design notes — Refynd’s digital journal.</p>
+      <input type="text" id="searchBar" placeholder="Search articles..." class="glass-search" />
+    </header>
+
+    <section id="blogsList" class="cards"></section>
+  </main>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/dynamic-list.js" data-dir="blogs"></script>
+</body>
+</html>
