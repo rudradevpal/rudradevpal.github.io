@@ -2,7 +2,6 @@
 // Lists .html files from /blogs or /tools directory using GitHub API or local fallback.
 
 document.addEventListener("DOMContentLoaded", async () => {
-  // Detect current directory (blogs or tools)
   const thisScript =
     document.currentScript ||
     document.querySelector('script[src*="dynamic-list.js"]');
@@ -22,17 +21,24 @@ document.addEventListener("DOMContentLoaded", async () => {
   let files = [];
 
   try {
-    // --- 1️⃣ Try GitHub API ---
     const hostname = window.location.hostname;
     const isGitHub = hostname.includes("github.io");
 
     if (isGitHub) {
-      // Extract repo owner + repo name
+      // --- Detect correct owner/repo pattern ---
+      const owner = hostname.split(".")[0]; // "rudradevpal"
       const pathParts = window.location.pathname.split("/").filter(Boolean);
-      const owner = pathParts[0];
-      const repo = pathParts[0]; // same for user.github.io/repo
-      const apiURL = `https://api.github.com/repos/${owner}/${repo}/contents/${dir}`;
+      let repo;
 
+      if (hostname === `${owner}.github.io`) {
+        // User page (repo = username.github.io)
+        repo = `${owner}.github.io`;
+      } else {
+        // Project page (repo = first part of path)
+        repo = pathParts[0];
+      }
+
+      const apiURL = `https://api.github.com/repos/${owner}/${repo}/contents/${dir}`;
       console.log("🔗 Fetching from GitHub API:", apiURL);
 
       const res = await fetch(apiURL);
@@ -52,7 +58,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
     }
 
-    // --- 2️⃣ Fallback for local testing ---
+    // --- Fallback for local testing ---
     if (!files.length) {
       console.log("⚙️ Falling back to local directory scraping...");
       const res = await fetch(`../${dir}/`);
@@ -71,10 +77,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         }));
     }
 
-    // --- 3️⃣ Render the list ---
     renderList(files);
 
-    // --- 🔍 Search Filter ---
+    // Search
     searchInput?.addEventListener("input", e => {
       const q = e.target.value.toLowerCase();
       renderList(files.filter(f => f.title.toLowerCase().includes(q)));
@@ -84,7 +89,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     listContainer.innerHTML = `<p style="color:#ccc;">⚠️ Unable to list ${dir}. Check console for details.</p>`;
   }
 
-  // --- Render Cards ---
   function renderList(files) {
     listContainer.innerHTML = "";
     if (!files.length) {
@@ -106,7 +110,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     lucide.createIcons();
   }
 
-  // --- Format File Names into Titles ---
   function formatTitle(name) {
     return name
       .replace(".html", "")
