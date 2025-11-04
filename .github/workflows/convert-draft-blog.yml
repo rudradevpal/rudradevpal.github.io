@@ -41,11 +41,16 @@ jobs:
     needs: setup
 
     steps:
-      - name: ⬇️ Download Repo Files
-        uses: actions/download-artifact@v4
+      - name: ⬇️ Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: ⚙️ Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          name: repo-files
-          path: .
+          node-version: "18"
+
+      - name: 📦 Install Markdown Converter
+        run: npm install -g showdown js-beautify
 
       - name: 🧠 Generate Blog HTMLs
         shell: bash
@@ -56,10 +61,8 @@ jobs:
             filename=$(basename "$file" .md)
             echo "🪶 Converting $filename.md → blogs/$filename.html"
 
-            # Convert Markdown content to HTML
             content=$(showdown makehtml -i "$file")
 
-            # Write HTML safely using printf (avoids YAML heredoc issues)
             printf '%s\n' "<!DOCTYPE html>" \
             "<html lang=\"en\">" \
             "<head>" \
@@ -84,7 +87,6 @@ jobs:
             "</body>" \
             "</html>" > "blogs/$filename.html"
 
-            # Move processed markdown to bin/blogs/
             echo "📦 Moving processed markdown to bin/blogs/"
             mv "$file" "bin/blogs/$filename.md"
           done
