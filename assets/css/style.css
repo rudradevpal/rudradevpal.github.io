@@ -818,3 +818,15 @@ body {
     font-size: 1.3rem;
   }
 }
+.glass-blog img,
+.glass-hero img {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.glass-blog img.loaded,
+.glass-hero img.loaded {
+  opacity: 1;
+  transform: translateY(0);
+}
