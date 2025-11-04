@@ -1,58 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Blogs | Refynd</title>
-  <link rel="stylesheet" href="../assets/css/style.css" />
-  <script src="https://unpkg.com/lucide@latest"></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Blogs | Refynd</title>
+    <link rel="stylesheet" href="../assets/css/style.css" />
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 
 <body>
-  <!-- Sidebar dynamically injected -->
-  <div id="sidebar-container"></div>
+    <!-- Sidebar dynamically injected -->
+    <div id="sidebar-container"></div>
 
-  <main class="main-content">
-    <header>
-      <h1>Blog Articles</h1>
-      <p>Insights, tutorials, and design notes — Refynd’s digital journal.</p>
-      <input type="text" id="searchBar" placeholder="Search articles..." class="glass-search" />
-    </header>
+    <main class="main-content">
+        <header>
+            <h1>Blog Articles</h1>
+            <p>Insights, tutorials, and design notes — Refynd’s digital journal.</p>
+            <input type="text" id="searchBar" placeholder="Search articles..." class="glass-search" />
+        </header>
 
-    <section id="blogsList"></section>
-  </main>
+        <section id="blogsList"></section>
+    </main>
 
-  <script src="../assets/js/main.js"></script>
-  <script src="../assets/js/dynamic-list.js" data-dir="blogs"></script>
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/dynamic-list.js" data-dir="blogs"></script>
 
-  <script>
-    document.addEventListener("blogsLoaded", e => {
-      const blogs = e.detail;
-      const listContainer = document.getElementById("blogsList");
-      const searchInput = document.getElementById("searchBar");
+    <script>
+        document.addEventListener("blogsLoaded", e => {
+            const blogs = e.detail;
+            const listContainer = document.getElementById("blogsList");
+            const searchInput = document.getElementById("searchBar");
 
-      function renderList(data) {
-        listContainer.innerHTML = "";
-        data.forEach(blog => {
-          const card = document.createElement("div");
-          card.className = "blog-card";
-          card.innerHTML = `
+            function renderList(data) {
+                listContainer.innerHTML = "";
+                data.forEach(blog => {
+                    const card = document.createElement("div");
+                    card.className = "blog-card";
+                    card.innerHTML = `
             <h2>${blog.title}</h2>
             <p>${blog.desc}</p>
             <a href="./${blog.file}">Read More →</a>
           `;
-          listContainer.appendChild(card);
+                    listContainer.appendChild(card);
+                });
+            }
+
+            renderList(blogs);
+
+            // 🔍 Live search
+            searchInput.addEventListener("input", e => {
+                const q = e.target.value.toLowerCase();
+                renderList(blogs.filter(b => b.title.toLowerCase().includes(q)));
+            });
         });
-      }
-
-      renderList(blogs);
-
-      // 🔍 Live search
-      searchInput.addEventListener("input", e => {
-        const q = e.target.value.toLowerCase();
-        renderList(blogs.filter(b => b.title.toLowerCase().includes(q)));
-      });
-    });
-  </script>
+    </script>
 </body>
+
 </html>
