@@ -6,7 +6,7 @@ on:
       - "drafts/blogs/*.md"
     branches:
       - main
-  workflow_dispatch: # ✅ manual trigger support
+  workflow_dispatch:  # ✅ manual trigger support
 
 jobs:
   build:
@@ -37,11 +37,8 @@ jobs:
             # Convert Markdown content to HTML
             content=$(showdown makehtml -i "$file")
 
-            # Escape backticks and special characters to avoid YAML issues
-            safe_content=$(echo "$content" | sed 's/`/\\`/g')
-
-            # Build final HTML using Refynd layout
-            cat <<EOF > "blogs/$filename.html"
+            # Escape EOF by quoting it so YAML doesn't parse it
+            cat > "blogs/$filename.html" <<'EOF'
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -59,7 +56,7 @@ jobs:
       <p>A Refynd Glass Blog</p>
     </header>
     <article class="glass-blog">
-      $safe_content
+      $content
     </article>
   </main>
   <script src="../assets/js/main.js"></script>
