@@ -1,0 +1,81 @@
+name: 🪩 Convert Markdown to Refynd Blog
+
+on:
+  push:
+    paths:
+      - "drafts/blogs/*.md"
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Convert Markdown → Refynd HTML
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🧩 Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: ⚙️ Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+
+      - name: 📦 Install Markdown Converter
+        run: npm install -g showdown js-beautify
+
+      - name: 🧠 Convert Markdown Blogs to HTML (Refynd Format)
+        run: |
+          mkdir -p blogs
+          for file in drafts/blogs/*.md; do
+            [ -e "$file" ] || continue
+            filename=$(basename "$file" .md)
+            echo "🪶 Converting $filename.md → blogs/$filename.html"
+
+            # Convert Markdown content to HTML
+            content=$(showdown makehtml -i "$file")
+
+            # Build final HTML using your real Refynd layout
+            cat > "blogs/$filename.html" <<EOF
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>${filename^} | Refynd</title>
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+  <!-- Sidebar dynamically injected by main.js -->
+
+  <!-- Main Content -->
+  <main class="main-content" id="main-content">
+    <header>
+      <h1>${filename^}</h1>
+      <p>A Refynd Glass Blog</p>
+    </header>
+
+    <article class="glass-blog">
+      $content
+    </article>
+  </main>
+
+  <!-- JS -->
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>
+EOF
+          done
+
+      - name: 🧹 Beautify HTML Output
+        run: js-beautify -r blogs/*.html || true
+
+      - name: 🚀 Commit and Push Changes
+        run: |
+          git config user.name "Refynd Bot"
+          git config user.email "bot@refynd.io"
+          git add blogs/
+          git diff --cached --quiet || git commit -m "🪩 Auto-generated blog pages from Markdown"
+          git push
