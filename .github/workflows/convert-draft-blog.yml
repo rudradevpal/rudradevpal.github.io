@@ -1,4 +1,4 @@
-name: 🪩 Convert Markdown to Refynd Blog
+name: 🪩 Convert Markdown to Refynd Blog HTML
 
 on:
   push:
@@ -6,6 +6,7 @@ on:
       - "drafts/blogs/*.md"
     branches:
       - main
+  workflow_dispatch:  # ✅ Allows manual run from the GitHub Actions UI
 
 jobs:
   build:
