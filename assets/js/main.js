@@ -81,3 +81,12 @@ collapseBtn?.addEventListener("click", () => {
     console.error("Navbar load failed:", err);
   }
 });
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll(".glass-blog img, .glass-hero img").forEach(img => {
+    if (img.complete) {
+      img.classList.add("loaded");
+    } else {
+      img.addEventListener("load", () => img.classList.add("loaded"));
+    }
+  });
+});
