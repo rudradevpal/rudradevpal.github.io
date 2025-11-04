@@ -1,4 +1,4 @@
-name: 🪩 Convert Markdown to Refynd Blog HTML
+name: Convert Markdown to Refynd Blog HTML
 
 on:
   # push:
@@ -6,14 +6,14 @@ on:
   #     - "drafts/blogs/*.md"
   #   branches:
   #     - main
-  workflow_dispatch:  # ✅ allow manual trigger from Actions UI
+  workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
-  build:
-    name: Convert Markdown → Refynd HTML
+  setup:
+    name: ⚙️ Setup Environment
     runs-on: ubuntu-latest
 
     steps:
@@ -25,13 +25,32 @@ jobs:
         with:
           node-version: "18"
 
-      - name: 📦 Install Markdown Converter
+      - name: 📦 Install Markdown Tools
         run: npm install -g showdown js-beautify
 
-      - name: 🧠 Convert Markdown Blogs to HTML (Refynd Format)
+      - name: 💾 Upload Installed Tools (cache for next job)
+        uses: actions/upload-artifact@v4
+        with:
+          name: repo-files
+          path: .
+          retention-days: 1
+
+  convert:
+    name: 🧠 Convert Markdown → Refynd HTML
+    runs-on: ubuntu-latest
+    needs: setup
+
+    steps:
+      - name: ⬇️ Download Repo Files
+        uses: actions/download-artifact@v4
+        with:
+          name: repo-files
+          path: .
+
+      - name: 🧠 Generate Blog HTMLs
         shell: bash
         run: |
-          mkdir -p blogs
+          mkdir -p blogs bin/blogs
           for file in drafts/blogs/*.md; do
             [ -e "$file" ] || continue
             filename=$(basename "$file" .md)
@@ -40,7 +59,7 @@ jobs:
             # Convert Markdown content to HTML
             content=$(showdown makehtml -i "$file")
 
-            # Write HTML safely using printf (no heredoc issues)
+            # Write HTML safely using printf (avoids YAML heredoc issues)
             printf '%s\n' "<!DOCTYPE html>" \
             "<html lang=\"en\">" \
             "<head>" \
@@ -64,7 +83,32 @@ jobs:
             "  <script src=\"../assets/js/main.js\"></script>" \
             "</body>" \
             "</html>" > "blogs/$filename.html"
+
+            # Move processed markdown to bin/blogs/
+            echo "📦 Moving processed markdown to bin/blogs/"
+            mv "$file" "bin/blogs/$filename.md"
           done
+
+      - name: 💾 Upload Converted Files
+        uses: actions/upload-artifact@v4
+        with:
+          name: converted-files
+          path: |
+            blogs/
+            bin/blogs/
+          retention-days: 1
+
+  publish:
+    name: 🚀 Beautify & Commit
+    runs-on: ubuntu-latest
+    needs: convert
+
+    steps:
+      - name: ⬇️ Download Converted Files
+        uses: actions/download-artifact@v4
+        with:
+          name: converted-files
+          path: .
 
       - name: 🧹 Beautify HTML Output
         run: js-beautify -r blogs/*.html || true
@@ -73,6 +117,6 @@ jobs:
         run: |
           git config user.name "Refynd Bot"
           git config user.email "bot@refynd.io"
-          git add blogs/
+          git add blogs/ bin/blogs/
           git diff --cached --quiet || git commit -m "🪩 Auto-generated blog pages from Markdown"
           git push
