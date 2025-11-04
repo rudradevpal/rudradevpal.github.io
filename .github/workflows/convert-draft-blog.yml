@@ -1,12 +1,12 @@
 name: 🪩 Convert Markdown to Refynd Blog HTML
 
 on:
-  push:
-    paths:
-      - "drafts/blogs/*.md"
-    branches:
-      - main
-  workflow_dispatch:  # ✅ manual trigger support
+  # push:
+  #   paths:
+  #     - "drafts/blogs/*.md"
+  #   branches:
+  #     - main
+  workflow_dispatch:  # ✅ allow manual trigger from Actions UI
 
 jobs:
   build:
@@ -37,32 +37,30 @@ jobs:
             # Convert Markdown content to HTML
             content=$(showdown makehtml -i "$file")
 
-            # Escape EOF by quoting it so YAML doesn't parse it
-            cat > "blogs/$filename.html" <<'EOF'
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>${filename^} | Refynd</title>
-  <link rel="stylesheet" href="../assets/css/style.css" />
-  <script src="https://unpkg.com/lucide@latest"></script>
-</head>
-<body>
-  <!-- Sidebar dynamically injected by main.js -->
-  <main class="main-content" id="main-content">
-    <header>
-      <h1>${filename^}</h1>
-      <p>A Refynd Glass Blog</p>
-    </header>
-    <article class="glass-blog">
-      $content
-    </article>
-  </main>
-  <script src="../assets/js/main.js"></script>
-</body>
-</html>
-EOF
+            # Write HTML safely using printf (no heredoc issues)
+            printf '%s\n' "<!DOCTYPE html>" \
+            "<html lang=\"en\">" \
+            "<head>" \
+            "  <meta charset=\"UTF-8\" />" \
+            "  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />" \
+            "  <title>${filename^} | Refynd</title>" \
+            "  <link rel=\"stylesheet\" href=\"../assets/css/style.css\" />" \
+            "  <script src=\"https://unpkg.com/lucide@latest\"></script>" \
+            "</head>" \
+            "<body>" \
+            "  <!-- Sidebar dynamically injected by main.js -->" \
+            "  <main class=\"main-content\" id=\"main-content\">" \
+            "    <header>" \
+            "      <h1>${filename^}</h1>" \
+            "      <p>A Refynd Glass Blog</p>" \
+            "    </header>" \
+            "    <article class=\"glass-blog\">" \
+            "      $content" \
+            "    </article>" \
+            "  </main>" \
+            "  <script src=\"../assets/js/main.js\"></script>" \
+            "</body>" \
+            "</html>" > "blogs/$filename.html"
           done
 
       - name: 🧹 Beautify HTML Output
