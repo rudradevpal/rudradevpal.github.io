@@ -6,7 +6,7 @@ on:
       - "drafts/blogs/*.md"
     branches:
       - main
-  workflow_dispatch:  # ✅ Allows manual run from the GitHub Actions UI
+  workflow_dispatch: # ✅ manual trigger support
 
 jobs:
   build:
@@ -26,6 +26,7 @@ jobs:
         run: npm install -g showdown js-beautify
 
       - name: 🧠 Convert Markdown Blogs to HTML (Refynd Format)
+        shell: bash
         run: |
           mkdir -p blogs
           for file in drafts/blogs/*.md; do
@@ -36,8 +37,11 @@ jobs:
             # Convert Markdown content to HTML
             content=$(showdown makehtml -i "$file")
 
-            # Build final HTML using your real Refynd layout
-            cat > "blogs/$filename.html" <<EOF
+            # Escape backticks and special characters to avoid YAML issues
+            safe_content=$(echo "$content" | sed 's/`/\\`/g')
+
+            # Build final HTML using Refynd layout
+            cat <<EOF > "blogs/$filename.html"
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -47,23 +51,17 @@ jobs:
   <link rel="stylesheet" href="../assets/css/style.css" />
   <script src="https://unpkg.com/lucide@latest"></script>
 </head>
-
 <body>
   <!-- Sidebar dynamically injected by main.js -->
-
-  <!-- Main Content -->
   <main class="main-content" id="main-content">
     <header>
       <h1>${filename^}</h1>
       <p>A Refynd Glass Blog</p>
     </header>
-
     <article class="glass-blog">
-      $content
+      $safe_content
     </article>
   </main>
-
-  <!-- JS -->
   <script src="../assets/js/main.js"></script>
 </body>
 </html>
