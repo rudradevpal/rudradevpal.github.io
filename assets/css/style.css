@@ -787,6 +787,117 @@ body {
   padding: 0 10px;
 }
 
+/* ===== ABOUT PAGE ===== */
+.about-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 90vh;
+  padding: 40px 20px;
+}
+
+.about-card {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 20px;
+  backdrop-filter: blur(14px);
+  padding: 50px 40px;
+  max-width: 700px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  animation: fadeUp 0.5s ease forwards;
+}
+
+.about-avatar {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  object-fit: cover;
+  margin-bottom: 18px;
+}
+
+.about-name {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+  background: linear-gradient(to right, #fff, #66fcf1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.about-tagline {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.85);
+  margin-bottom: 4px;
+}
+
+.about-location {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.95rem;
+  margin-bottom: 25px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.about-bio {
+  text-align: left;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 1rem;
+  line-height: 1.7;
+  margin-bottom: 35px;
+}
+
+.about-bio p + p {
+  margin-top: 14px;
+}
+
+.social-links {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 22px;
+}
+
+.social-links a {
+  color: #66fcf1;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 10px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.social-links a:hover {
+  background: #66fcf1;
+  color: #0b0c10;
+  transform: translateY(-3px);
+}
+
+.social-links i[data-lucide] {
+  width: 22px;
+  height: 22px;
+}
+
+@media (max-width: 600px) {
+  .about-card {
+    padding: 35px 25px;
+  }
+  .about-avatar {
+    width: 100px;
+    height: 100px;
+  }
+  .about-name {
+    font-size: 1.6rem;
+  }
+  .about-bio {
+    font-size: 0.95rem;
+  }
+}
+
+
 /* ✅ Mobile optimization */
 @media (max-width: 768px) {
   .glass-blog {
