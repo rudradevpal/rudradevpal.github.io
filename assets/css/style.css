@@ -746,7 +746,62 @@ body {
   background: rgba(102, 252, 241, 0.3);
   color: #0a0f1f;
 }
+/* ===== RESPONSIVE IMAGE FIX FOR BLOGS ===== */
 
+/* Makes all blog images fully responsive */
+.glass-blog img,
+.glass-hero img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 16px;
+  margin: 1.8rem auto;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+  object-fit: cover;
+}
+
+/* Keeps hero image inside content bounds */
+.glass-hero {
+  max-width: 100%;
+  margin: 0 auto 2rem;
+  padding: 0;
+  overflow: hidden;
+  border-radius: 18px;
+}
+
+/* Prevents large hero images from overflowing */
+.glass-hero img {
+  width: 100%;
+  height: auto;
+  border-radius: inherit;
+}
+
+/* Caption stays within bounds */
+.glass-hero figcaption,
+.glass-blog figcaption {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
+  font-style: italic;
+  margin-top: 8px;
+  padding: 0 10px;
+}
+
+/* ✅ Mobile optimization */
+@media (max-width: 768px) {
+  .glass-blog {
+    padding: 35px 20px;
+  }
+
+  .glass-hero img {
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+  }
+
+  .glass-blog img {
+    margin: 1.2rem 0;
+  }
+}
 /* ===== RESPONSIVE READABILITY ===== */
 @media (max-width: 900px) {
   .glass-blog {
